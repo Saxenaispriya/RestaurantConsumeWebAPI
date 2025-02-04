@@ -1,0 +1,68 @@
+﻿@model RestaurantConsumeWebAPI.Models.DoOrderRequestPayload
+
+@{
+    ViewData["Title"] = "DoOrders";
+}
+
+<h1>DoOrders</h1>
+
+<h4>DoOrderRequestPayload</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="DoOrders" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="tablenumber" class="control-label"></label>
+                <input asp-for="tablenumber" class="form-control" />
+                <span asp-validation-for="tablenumber" class="text-danger"></span>
+            </div>
+
+            <h5>Orders</h5>
+            <table class="table" id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Food Item Number</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addOrder()">Add Order</button>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function addOrder() {
+            var index = document.querySelectorAll('#ordersTable tbody tr').length;
+            var row = `<tr>
+                <td><input type="number" name="orderslst[${index}].orderId" class="form-control" required /></td>
+                <td><input type="number" name="orderslst[${index}]._foodItemNumber" class="form-control" required /></td>
+                <td><input type="number" name="orderslst[${index}]._quantity" class="form-control" required /></td>
+                <td><button type="button" class="btn btn-danger" onclick="removeOrder(this)">Remove</button></td>
+            </tr>`;
+            document.querySelector('#ordersTable tbody').insertAdjacentHTML('beforeend', row);
+        }
+
+        function removeOrder(button) {
+            button.closest('tr').remove();
+        }
+    </script>
+}

@@ -1,0 +1,68 @@
+﻿@model dynamic
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RestaurantConsumeWebAPI</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RestaurantConsumeWebAPI.styles.css" asp-append-version="true" />
+    <style>
+        .container-fluid {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            height: 100vh;
+        }
+
+            .sidebar a {
+                display: block;
+                padding: 10px;
+                margin: 5px 0;
+                text-decoration: none;
+                color: black;
+                background-color: #e9ecef;
+                border-radius: 5px;
+            }
+
+                .sidebar a:hover {
+                    background-color: #007bff;
+                    color: white;
+                }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="sidebar">
+            @* <a class="navbar-brand" asp-area="" asp-controller="RestaurantConsume" asp-action="ShowTable">RestaurantConsumeWebAPI</a> *@
+            <a class="nav-link" asp-area="" asp-controller="RestaurantConsume" asp-action="Index">Home</a>
+        </nav>
+        <div class="content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+   @*  <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - RestaurantConsumeWebAPI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

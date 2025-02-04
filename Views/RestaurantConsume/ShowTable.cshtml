@@ -1,0 +1,53 @@
+﻿@model List<RestaurantConsumeWebAPI.Models.Table>
+
+@{
+    Layout = "_Layout";
+}
+
+<h1>Table Details</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Table Number</th>
+            <th>Occupied</th>
+            <th>Orders</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var table in Model)
+        {
+            <tr>
+                <td>@table.TableNumber</td>
+                <td>@(table.IsTableOccupied ? "Yes" : "No")</td>
+                <td>
+                    @if (table.orderlist.Any())
+                    {
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Food Item</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in table.orderlist)
+                                {
+                                    <tr>
+                                        <td>@order.orderId</td>
+                                        <td>@order._fooditemNumber</td>
+                                        <td>@order._quantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <span>No Orders</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

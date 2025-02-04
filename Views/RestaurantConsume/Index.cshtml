@@ -1,0 +1,44 @@
+﻿@model dynamic
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .btn {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 10px auto;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Restaurant Management System</h1>
+    <div class="button-container">
+        <a href="@Url.Action("GenerateBill", "RestaurantConsume")" class="btn">Generate Bill</a>
+        <a href="@Url.Action("ShowFoodItems", "RestaurantConsume")" class="btn">Show Food Items</a>
+        <a href="@Url.Action("AddTable", "RestaurantConsume")" class="btn">Add Table</a>
+        <a href="@Url.Action("ShowTable", "RestaurantConsume")" class="btn">Show Table</a>
+        <a href="@Url.Action("AddFoodItem", "RestaurantConsume")" class="btn">Add Food Item</a>
+        <a href="@Url.Action("DoOrders", "RestaurantConsume")" class="btn">Do Orders</a>
+    </div>
+</body>
+</html>
