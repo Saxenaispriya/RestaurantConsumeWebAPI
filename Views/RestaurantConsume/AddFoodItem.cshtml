@@ -1,0 +1,49 @@
+﻿@model RestaurantConsumeWebAPI.Models.Food
+
+@{
+    ViewData["Title"] = "Add Food Item";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>🍔 Add New Food Item</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddFoodItem">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <!-- Food ID -->
+                <div class="mb-3">
+                    <label asp-for="foodItemId" class="form-label fw-bold">Food ID</label>
+                    <input asp-for="foodItemId" class="form-control" placeholder="Enter Food ID" required />
+                    <span asp-validation-for="foodItemId" class="text-danger"></span>
+                </div>
+
+                <!-- Food Name -->
+                <div class="mb-3">
+                    <label asp-for="foodItemName" class="form-label fw-bold">Food Name</label>
+                    <input asp-for="foodItemName" class="form-control" placeholder="Enter Food Name" required />
+                    <span asp-validation-for="foodItemName" class="text-danger"></span>
+                </div>
+
+                <!-- Food Price -->
+                <div class="mb-3">
+                    <label asp-for="foodPrice" class="form-label fw-bold">Food Price</label>
+                    <input asp-for="foodPrice" type="number" class="form-control" placeholder="Enter Price" min="0" step="0.01" required />
+                    <span asp-validation-for="foodPrice" class="text-danger"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Add Food</button>
+                    <button type="reset" class="btn btn-warning"><i class="fas fa-undo"></i> Reset</button>
+                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

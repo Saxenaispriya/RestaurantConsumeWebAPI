@@ -1,7 +1,21 @@
-﻿
-@{
-    ViewData["Title"] = "GenerateBill";
+﻿@{
+    ViewBag.Title = "Generate Bill";
 }
 
-<h1>GenerateBill</h1>
+<h2>Generate Bill</h2>
 
+<form method="post" asp-controller="RestaurantConsume" asp-action="GenerateBill">
+    <label for="tablenumber">Enter Table Number:</label>
+    <input type="number" id="tablenumber" name="tablenumber" required min="1" />
+    <button type="submit">Get Bill</button>
+</form>
+
+@if (ViewBag.BillAmount != null)
+{
+    <h3>Total Bill for Table @ViewBag.TableNumber: $@ViewBag.BillAmount</h3>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <p style="color: red;">@ViewBag.Error</p>
+}

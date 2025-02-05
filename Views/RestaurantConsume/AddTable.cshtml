@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewData["Title"] = "Add Table";
+}
+
+<h1>AddTable</h1>
+<form method="post" asp-controller="RestaurantConsume" asp-action="AddTable">
+    <label for="tablenumber">Enter Table Number:</label>
+    <input type="number" id="tablenumber" name="tablenumber" required min="1" />
+    <button type="submit">Add Table</button>
+</form>
+    
