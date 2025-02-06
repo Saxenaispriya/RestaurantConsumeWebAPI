@@ -1,4 +1,4 @@
-﻿@model RestaurantConsumeWebAPI.Models.Food
+﻿@model RestaurantConsumeWebAPI.Models.foodRequestPayload
 
 @{
     ViewData["Title"] = "Add Food Item";
@@ -22,9 +22,9 @@
 
                 <!-- Food Name -->
                 <div class="mb-3">
-                    <label asp-for="foodItemName" class="form-label fw-bold">Food Name</label>
-                    <input asp-for="foodItemName" class="form-control" placeholder="Enter Food Name" required />
-                    <span asp-validation-for="foodItemName" class="text-danger"></span>
+                    <label asp-for="foodName" class="form-label fw-bold">Food Name</label>
+                    <input asp-for="foodName" class="form-control" placeholder="Enter Food Name" required />
+                    <span asp-validation-for="foodName" class="text-danger"></span>
                 </div>
 
                 <!-- Food Price -->

@@ -6,31 +6,28 @@
 
 <h2 class="text-center mt-4">🍽️ Food Menu</h2>
 
-<!-- Add New Food Item Button -->
+<!-- Display Success/Error Messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <div class="mb-3 text-end">
-    <a asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Add New Food</a>
+    <a asp-action="AddFoodItem" asp-controller="RestaurantConsume" class="btn btn-success"><i class="fas fa-plus"></i> Add New Food</a>
 </div>
 
-<!-- Search Bar -->
-<div class="mb-3">
-    <input type="text" id="searchBox" class="form-control" placeholder="🔍 Search food items..." onkeyup="searchTable()">
-</div>
+<input type="text" id="searchBox" class="form-control mb-3" placeholder="🔍 Search food items..." onkeyup="searchTable()">
 
-<!-- Food Items Table -->
-<table class="table table-hover table-bordered">
-  @*   <thead class="table-dark text-center">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.foodItemId)</th>
-            <th>@Html.DisplayNameFor(model => model.foodItemName)</th>
-            <th>@Html.DisplayNameFor(model => model.foodPrice)</th>
-            <th>Actions</th>
-        </tr>
-    </thead> *@
+<table class="table table-hover table-bordered" id="foodTable">
     <thead class="table-dark text-center">
         <tr>
-            <th>Food Number</th>  <!-- Change this to your preferred name -->
-            <th>Food Name</th>  <!-- Change this to your preferred name -->
-            <th>Food Price</th>  <!-- Change this to your preferred name -->
+            <th>Food Number</th>
+            <th>Food Name</th>
+            <th>Food Price</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -39,45 +36,36 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td class="text-center">@Html.DisplayFor(modelItem => item.foodItemId)</td>
-                <td>@Html.DisplayFor(modelItem => item.foodItemName)</td>
-                <td class="text-center">₹@Html.DisplayFor(modelItem => item.foodPrice)</td>
+                <td class="text-center">@item.foodItemId</td>
+                <td>@item.foodItemName</td>
+                <td class="text-center">₹@item.foodPrice</td>
                 <td class="text-center">
-                    <a asp-action="Edit" asp-route-id="@item.foodItemId" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.foodItemId" class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i> Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.foodItemId" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this food item?');">
-                        <i class="fas fa-trash"></i> Delete
-                    </a>
+                  @*   <a asp-action="Edit" asp-route-id="@item.foodItemId" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.foodItemId" class="btn btn-info btn-sm"><i class="fas fa-info-circle"></i> Details</a> *@
+
+                    <!-- Delete Form -->
+                    <form asp-action="deleteFoodItem" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this food item?');">
+                        <input type="hidden" name="id" value="@item.foodItemId" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<!-- JavaScript for Search Functionality -->
 <script>
     function searchTable() {
         let input = document.getElementById("searchBox").value.toUpperCase();
-        let table = document.querySelector("table");
-        let rows = table.getElementsByTagName("tr");
+        let rows = document.querySelectorAll("#foodTable tbody tr");
 
-        for (let i = 1; i < rows.length; i++) {
-            let cells = rows[i].getElementsByTagName("td");
-            let match = false;
-
-            for (let j = 0; j < cells.length; j++) {
-                if (cells[j]) {
-                    let textValue = cells[j].textContent || cells[j].innerText;
-                    if (textValue.toUpperCase().indexOf(input) > -1) {
-                        match = true;
-                        break;
-                    }
-                }
-            }
-            rows[i].style.display = match ? "" : "none";
-        }
+        rows.forEach(row => {
+            let text = row.textContent.toUpperCase();
+            row.style.display = text.includes(input) ? "" : "none";
+        });
     }
 </script>
 
-<!-- FontAwesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

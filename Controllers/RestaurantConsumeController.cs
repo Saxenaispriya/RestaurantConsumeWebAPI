@@ -11,12 +11,15 @@ namespace RestaurantConsumeWebAPI.Controllers
 {
     public class RestaurantConsumeController : Controller
     {
-        public  HttpClient _client=new HttpClient();
-        //public RestaurantConsumeController(HttpClient client)
-        //{
-        //    _client = client;
-        //    _client.BaseAddress = new Uri("http://localhost:5236/");
-        //}
+        // public  HttpClient _client=new HttpClient();
+        private readonly HttpClient _httpClient;
+
+        public RestaurantConsumeController(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("http://localhost:5236/api/");
+        }
+        
         [HttpGet]
         public IActionResult AddTable()
         {
@@ -29,7 +32,7 @@ namespace RestaurantConsumeWebAPI.Controllers
             addtables.TableNumber = tablenumber;
             addtables.IsTableOccupied = isTableOccupied;
             StringContent content = new StringContent(JsonConvert.SerializeObject(addtables), Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("http://localhost:5236/api/Restaurant/addTableRoute", content);
+            var response = await _httpClient.PostAsync("Restaurant/addTableRoute", content);
                 if(!response.IsSuccessStatusCode)
                 {
                     ViewBag.Error = "Failed to Add Table";
@@ -40,7 +43,7 @@ namespace RestaurantConsumeWebAPI.Controllers
         public async Task<IActionResult> ShowTable()
         {
             List<Table> tables = new List<Table>();
-            using (var response = await _client.GetAsync("http://localhost:5236/api/Restaurant/AvailabletableRoute"))
+            using (var response = await _httpClient.GetAsync("Restaurant/AvailabletableRoute"))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 tables = JsonConvert.DeserializeObject<List<Table>>(apiResponse);
@@ -58,7 +61,7 @@ namespace RestaurantConsumeWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> DoOrders(DoOrderRequestPayload doOrderRequestPayload)
         {
-            string apiUrl = "http://localhost:5236/api/Restaurant/do_OrderRoute";
+            string apiUrl = "Restaurant/do_OrderRoute";
 
             // Serialize model to JSON
             string jsonPayload = JsonConvert.SerializeObject(doOrderRequestPayload);
@@ -67,7 +70,7 @@ namespace RestaurantConsumeWebAPI.Controllers
             // Log the request payload (for debugging)
             Console.WriteLine("Sending Request: " + jsonPayload);
 
-            HttpResponseMessage response = await _client.PostAsync(apiUrl, content);
+            HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
 
             string responseContent = await response.Content.ReadAsStringAsync();
             Console.WriteLine("Response: " + responseContent);
@@ -89,9 +92,9 @@ namespace RestaurantConsumeWebAPI.Controllers
         public async Task<ActionResult> GenerateBill(int tablenumber)
         {
             int bill = 0;
-            _client.BaseAddress = new Uri("http://localhost:5236/api/Restaurant/");
+            _httpClient.BaseAddress = new Uri("Restaurant/");
             string s = string.Format("generatebillRoute?tablenumber={0}", tablenumber);
-            HttpResponseMessage response = await _client.GetAsync(s);
+            HttpResponseMessage response = await _httpClient.GetAsync(s);
             if(!response.IsSuccessStatusCode)
             {
                 ViewBag.Error = "Bill not found for Table {tablenumber} .";
@@ -107,7 +110,7 @@ namespace RestaurantConsumeWebAPI.Controllers
         public async Task<IActionResult> showFoodItem()
         {
             List<Food> foodList = new List<Food>();
-            var response = await _client.GetAsync("http://localhost:5236/api/Restaurant/MenuesRoute");
+            var response = await _httpClient.GetAsync("Restaurant/MenuesRoute");
             string jsonResponse = await response.Content.ReadAsStringAsync();
             foodList=JsonConvert.DeserializeObject<List<Food>>(jsonResponse);
             return View(foodList);
@@ -120,10 +123,10 @@ namespace RestaurantConsumeWebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFoodItem(Food food)
+        public async Task<IActionResult> AddFoodItem(foodRequestPayload food)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(food), Encoding.UTF8, "application/json");
-            var response = await _client.PostAsync("http://localhost:5236/api/Restaurant/addFoodItemRoute", content);
+            var response = await _httpClient.PostAsync("Restaurant/addFoodItemRoute", content);
             if (!response.IsSuccessStatusCode)
             {
                 ViewBag.Error = "Failed to Add Table";
@@ -131,5 +134,24 @@ namespace RestaurantConsumeWebAPI.Controllers
             }
             return RedirectToAction("Index", "RestaurantConsume");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> deleteFoodItem(int id)
+        {
+           // _httpClient.BaseAddress = new Uri("http://localhost:5236/api/");
+            var response = await _httpClient.DeleteAsync($"Restaurant/deleteFoodItemRoute?_fooditem={id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Food item deleted successfully!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete food item.";
+            }
+
+            return RedirectToAction("ShowFoodItem", "RestaurantConsume"); // Redirect back to the grid
+        }
+
     }
 }

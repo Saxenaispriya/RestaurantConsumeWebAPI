@@ -1,7 +1,14 @@
 using Microsoft.AspNetCore.HttpLogging;
+using RestaurantConsumeWebAPI.Controllers;
 using System.Net.Security;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register HttpClient with base address
+builder.Services.AddHttpClient<RestaurantConsumeController>(client =>
+{
+    //client.BaseAddress = new Uri("http://localhost:5236/api/");
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -33,6 +40,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=RestaurantConsume}/{action=Index}/{id?}");
 
 app.Run();

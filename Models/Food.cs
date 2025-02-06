@@ -1,4 +1,6 @@
-﻿namespace RestaurantConsumeWebAPI.Models
+﻿using Newtonsoft.Json;
+
+namespace RestaurantConsumeWebAPI.Models
 {
     public class Food
     {

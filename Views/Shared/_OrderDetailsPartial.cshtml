@@ -1,0 +1,31 @@
+﻿@model RestaurantConsumeWebAPI.Models.Table
+
+<div class="order-details">
+    <h4>Order Details for Table @Model.TableNumber</h4>
+    @if (Model.orderlist.Any())
+    {
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Food Item</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.orderlist)
+                {
+                    <tr>
+                        <td>@order.orderId</td>
+                        <td>@order._fooditemNumber</td>
+                        <td>@order._quantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <span>No Orders</span>
+    }
+</div>

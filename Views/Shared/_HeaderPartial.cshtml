@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+
+<header class="header text-white p-3" style="background-color: #6c757d;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Welcome to the Restaurant Management System</h1>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" asp-controller="RestaurantConsume" asp-action="Index">🏠 Home</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/RestaurantConsume/ShowTable">Tables</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/RestaurantConsume/ShowMenu">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/RestaurantConsume/Order">Orders</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

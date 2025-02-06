@@ -4,19 +4,32 @@
     Layout = "_Layout";
 }
 
-<h1>Table Details</h1>
+<h1 class="text-center mt-4">Table Details</h1>
+
+<!-- Display Success/Error Messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<!-- Tables List Table -->
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>Table Number</th>
             <th>Occupied</th>
             <th>Orders</th>
+            <th>Actions</th> <!-- Add column for actions (delete) -->
         </tr>
     </thead>
     <tbody>
         @foreach (var table in Model)
         {
-            <tr>
+            <tr id="table-@table.TableNumber">
                 <td>@table.TableNumber</td>
                 <td>@(table.IsTableOccupied ? "Yes" : "No")</td>
                 <td>
@@ -47,7 +60,37 @@
                         <span>No Orders</span>
                     }
                 </td>
+                <td>
+                    <!-- Delete Button -->
+                    <button class="btn btn-danger btn-sm" onclick="deleteTable(@table.TableNumber)">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- JavaScript for Delete Functionality -->
+<script>
+    function deleteTable(tableNumber) {
+        if (confirm('Are you sure you want to delete this table?')) {
+            // Perform the AJAX DELETE request
+            fetch(`http://localhost:5236/api/Restaurant/deletetableRoute?_tablenumber=${tableNumber}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Table deleted successfully!');
+                    document.getElementById(`table-${tableNumber}`).remove(); // Remove the row from the table
+                } else {
+                    alert('Failed to delete the table.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
+
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
